@@ -5,13 +5,27 @@ function PeopleHome() {
   const navigate = useNavigate();
 
   return (
-    <div className="peoplehome-bg">
-      <h1>Public Portal</h1>
-      <p>View factory pollution data and raise official complaints.</p>
+    <div className="people-home-bg">
+      <div className="people-home-card">
+        <h1>Public Access</h1>
+        <p>
+          Login or register to view factory pollution data and raise official
+          complaints.
+        </p>
 
-      <div className="buttons">
-        <button onClick={() => navigate("/people/login")}>Login</button>
-        <button onClick={() => navigate("/people/register")}>Register</button>
+        <button
+          className="login-btn"
+          onClick={() => navigate("/people/login")}
+        >
+          Public Login
+        </button>
+
+        <button
+          className="register-btn"
+          onClick={() => navigate("/people/register")}
+        >
+          Public Register
+        </button>
       </div>
     </div>
   );

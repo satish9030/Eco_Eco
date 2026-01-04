@@ -14,9 +14,10 @@
   );
 }
 
-/* CARD */
-.card {
-  width: 420px;
+/* FACTORY CARD (UNIQUE – NO OVERRIDE) */
+.factory-card {
+  width: 100%;
+  max-width: 560px;        /* ✅ NOW IT WILL CHANGE */
   background: white;
   padding: 40px;
   border-radius: 16px;
@@ -24,14 +25,15 @@
   box-shadow: 0 15px 35px rgba(0,0,0,0.15);
 }
 
-.card h2 {
+/* TITLE */
+.factory-card h2 {
   color: #2e7d32;
   margin-bottom: 25px;
 }
 
 /* FORM */
-.card input,
-.card select {
+.factory-card input,
+.factory-card select {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
@@ -40,7 +42,7 @@
 }
 
 /* BUTTON */
-.card button {
+.factory-card button {
   width: 100%;
   padding: 12px;
   background: linear-gradient(135deg, #4caf50, #66bb6a);
@@ -51,7 +53,7 @@
   cursor: pointer;
 }
 
-.card button:hover {
+.factory-card button:hover {
   opacity: 0.9;
 }
 

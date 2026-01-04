@@ -14,9 +14,10 @@
   );
 }
 
-/* CARD */
-.card {
-  width: 380px;
+/* FACTORY LOGIN CARD (WIDE & SAFE) */
+.factory-login-card {
+  width: 100%;
+  max-width: 560px;   /* 🔥 THIS fixes slim card */
   background: white;
   padding: 40px;
   border-radius: 16px;
@@ -24,12 +25,14 @@
   box-shadow: 0 15px 35px rgba(0,0,0,0.15);
 }
 
-.card h2 {
+/* TITLE */
+.factory-login-card h2 {
   color: #2e7d32;
   margin-bottom: 25px;
 }
 
-.card input {
+/* INPUTS */
+.factory-login-card input {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
@@ -37,7 +40,8 @@
   border: 1px solid #ccc;
 }
 
-.card button {
+/* BUTTON */
+.factory-login-card button {
   width: 100%;
   padding: 12px;
   background: linear-gradient(135deg, #ff9800, #ffb74d);
@@ -48,6 +52,11 @@
   cursor: pointer;
 }
 
+.factory-login-card button:hover {
+  opacity: 0.9;
+}
+
+/* BACK */
 .back {
   margin-top: 15px;
   background: none;

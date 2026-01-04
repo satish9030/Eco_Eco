@@ -11,7 +11,7 @@ function Login() {
 
   return (
     <div className="page-bg">
-      <div className="card">
+      <div className="factory-login-card">
         <h2>Factory Login</h2>
 
         <form onSubmit={handleLogin}>

@@ -11,7 +11,7 @@ function Register() {
 
   return (
     <div className="page-bg">
-      <div className="card">
+      <div className="factory-card">
         <h2>Factory Registration</h2>
 
         <form onSubmit={handleSubmit}>
@@ -25,7 +25,11 @@ function Register() {
             <option>Non-Essential Product</option>
           </select>
 
-          <input type="number" placeholder="Production Capacity" required />
+          <input
+            type="number"
+            placeholder="Production Capacity"
+            required
+          />
 
           <button type="submit">Register</button>
         </form>
