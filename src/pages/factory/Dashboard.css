@@ -1,123 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
-* {
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-}
-
-/* PAGE BG */
-.dash-bg {
-  min-height: 100vh;
-  padding: 40px;
-  background: linear-gradient(135deg, #e8f5e9, #ffffff, #fff3e0);
-}
-
-/* HEADER */
-.dash-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.dash-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1b5e20;
-}
-
-/* SUBMIT BUTTON */
-.submit-btn {
-  padding: 12px 22px;
-  background: linear-gradient(135deg, #ff9800, #ffb74d);
-  border: none;
-  border-radius: 30px;
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 10px 25px rgba(255, 152, 0, 0.4);
-}
-
-.submit-btn:hover {
-  transform: translateY(-2px);
-}
-
-/* CARDS */
 .cards {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
   gap: 20px;
-  margin-bottom: 50px;
 }
 
 .card {
-  flex: 1 1 220px;
-  max-width: 260px;
   background: white;
-  padding: 26px;
-  border-radius: 18px;
-  text-align: center;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
   font-weight: 600;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  text-align: center;
 }
 
 .card b {
   display: block;
-  margin-top: 8px;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
+  margin-top: 10px;
 }
 
-.blue   { background: #e3f2fd; }
-.cyan   { background: #e0f7fa; }
-.green  { background: #e8f5e9; }
-.yellow { background: #fffde7; }
-.red    { background: #ffebee; }
-
-/* HISTORY */
-.history {
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-}
-
-.history h2 {
-  margin-bottom: 20px;
-  color: #1b5e20;
-}
-
-/* TABLE */
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th {
-  background: #f1f8e9;
-  color: #2e7d32;
-  padding: 14px;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-}
-
-td {
-  padding: 14px;
-  text-align: center;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.safe {
-  background: #e8f5e9;
-  color: #1b5e20;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-weight: 600;
-}
-
-.danger {
-  background: #ffebee;
-  color: #b71c1c;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-weight: 600;
-}
+.air { background: #e3f2fd; }
+.water { background: #e0f7fa; }
+.status { background: #e8f5e9; }
+.fine { background: #ffebee; }

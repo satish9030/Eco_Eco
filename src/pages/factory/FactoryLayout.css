@@ -1,0 +1,58 @@
+.factory-layout {
+  display: flex;
+  height: 100vh;
+  font-family: Inter, sans-serif;
+}
+
+.sidebar {
+  width: 220px;
+  background: #1b5e20;
+  color: white;
+  padding: 30px 20px;
+}
+
+.logo {
+  margin-bottom: 30px;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+  background: #2e7d32;
+}
+
+.main {
+  flex: 1;
+  background: #f5f7fa;
+}
+
+.topbar {
+  height: 60px;
+  background: white;
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.logout {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.content {
+  padding: 30px;
+}

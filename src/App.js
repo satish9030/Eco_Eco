@@ -1,48 +1,63 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 
-// Main
+/* Main */
 import Main from "./pages/main";
 
-// People (Public)
+/* People */
 import PeopleHome from "./pages/people/peoplehome";
 import PeopleLogin from "./pages/people/peoplelogin";
 import PeopleRegister from "./pages/people/peopleregister";
 import PeopleDashboard from "./pages/people/peopledashboard";
 
-// Factory
+/* Factory */
 import Home from "./pages/factory/Home";
 import Login from "./pages/factory/Login";
 import Register from "./pages/factory/Register";
+import FactoryLayout from "./pages/factory/FactoryLayout";
 import Dashboard from "./pages/factory/Dashboard";
+import History from "./pages/factory/History";
+import Fines from "./pages/factory/Fines";
+import Profile from "./pages/factory/Profile";
 import SubmitEmission from "./pages/factory/SubmitEmission";
 
-// Government
+/* Government */
 import GovLogin from "./pages/government/GovLogin";
 import GovDashboard from "./pages/government/GovDashboard";
 
 function App() {
   return (
     <Routes>
-      {/* Main */}
+      {/* MAIN */}
       <Route path="/" element={<Main />} />
 
-      {/* People */}
+      {/* PEOPLE */}
       <Route path="/people" element={<PeopleHome />} />
       <Route path="/people/login" element={<PeopleLogin />} />
       <Route path="/people/register" element={<PeopleRegister />} />
       <Route path="/people/dashboard" element={<PeopleDashboard />} />
 
-      {/* Factory */}
+      {/* FACTORY AUTH */}
       <Route path="/factory" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/submit" element={<SubmitEmission />} />
+      <Route path="/factory/login" element={<Login />} />
+      <Route path="/factory/register" element={<Register />} />
 
-      {/* Government */}
+      {/* FACTORY DASHBOARD */}
+      <Route path="/factory" element={<FactoryLayout />}>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="history" element={<History />} />
+        <Route path="fines" element={<Fines />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="submit" element={<SubmitEmission />} />
+      </Route>
+
+      {/* GOVERNMENT */}
       <Route path="/gov/login" element={<GovLogin />} />
       <Route path="/gov/dashboard" element={<GovDashboard />} />
+
+      {/* SAFETY REDIRECTS */}
+      <Route path="/login" element={<Navigate to="/factory/login" />} />
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }

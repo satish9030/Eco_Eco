@@ -6,7 +6,7 @@ function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    navigate("/dashboard");
+    navigate("/factory/dashboard");
   };
 
   return (
@@ -17,7 +17,6 @@ function Login() {
         <form onSubmit={handleLogin}>
           <input type="text" placeholder="Factory ID / Email" required />
           <input type="password" placeholder="Password" required />
-
           <button type="submit">Login</button>
         </form>
 

@@ -1,0 +1,7 @@
+.profile-box {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  max-width: 500px;
+}
