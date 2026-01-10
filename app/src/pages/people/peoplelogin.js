@@ -21,6 +21,8 @@ function PeopleLogin() {
     });
 
     if (res.ok) {
+      const data = await res.json();     // ✅ READ RESPONSE
+      localStorage.setItem("token", data.token); // ✅ SAVE TOKEN
       navigate("/people/dashboard", { replace: true });
     } else {
       alert("Invalid public credentials");

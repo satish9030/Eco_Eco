@@ -4,7 +4,7 @@ import {
   FaIndustry,
   FaFileAlt,
   FaExclamationTriangle,
-  FaChartLine
+  FaChartLine,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -13,32 +13,44 @@ export default function GovDashboard() {
   const navigate = useNavigate();
   const [stats, setStats] = useState({
     total: 0,
-    exceeded: 0
+    exceeded: 0,
   });
 
+  /* 🔐 AUTH GUARD — PREVENT UNAUTHORIZED ACCESS */
+  useEffect(() => {
+    const token = localStorage.getItem("gov_token");
+    if (!token) {
+      navigate("/gov/login", { replace: true });
+    }
+  }, [navigate]);
+
+  /* 🚪 LOGOUT — CLEAR SESSION */
+  const handleLogout = () => {
+    localStorage.removeItem("gov_token");
+    navigate("/gov/login", { replace: true });
+  };
+
+  /* 📊 FETCH STATS */
   useEffect(() => {
     fetch("http://127.0.0.1:5000/monthly-report")
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         const factories = Object.values(data.factories);
         const exceeded = factories.filter(
-          f => f.status === "EXCEEDED"
+          (f) => f.status === "EXCEEDED"
         ).length;
 
         setStats({
           total: factories.length,
-          exceeded
+          exceeded,
         });
       });
   }, []);
 
   return (
     <div className="gov-page">
-
       {/* ================= NAVBAR ================= */}
       <nav className="gov-navbar">
-
-        {/* LOGO — GUARANTEED NAVIGATION */}
         <Link
           to="/"
           className="logo"
@@ -54,10 +66,7 @@ export default function GovDashboard() {
           <li onClick={() => navigate("/gov/complaints")}>Complaints</li>
         </ul>
 
-        <button
-          className="logout-btn"
-          onClick={() => navigate("/", { replace: true })}
-        >
+        <button className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
       </nav>
@@ -134,7 +143,6 @@ export default function GovDashboard() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }

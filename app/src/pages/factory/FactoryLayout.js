@@ -1,13 +1,7 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import "./FactoryLayout.css";
 
 export default function FactoryLayout() {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    navigate("/");
-  };
-
   return (
     <div className="factory-layout">
       {/* SIDEBAR */}
@@ -24,9 +18,7 @@ export default function FactoryLayout() {
       <div className="main">
         <header className="topbar">
           <span>Factory Control Center</span>
-          <button className="logout" onClick={handleLogout}>
-            Logout
-          </button>
+          {/* ❌ Logout button removed */}
         </header>
 
         <div className="content">
