@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend
 } from "chart.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";   // ✅ FIXED
 import { useEffect, useState } from "react";
 
 ChartJS.register(
@@ -24,31 +24,27 @@ ChartJS.register(
 export default function Dashboard() {
   const navigate = useNavigate();
   const factoryId = localStorage.getItem("factoryId");
-
-  const [factory, setFactory] = useState(null);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
+    if (!factoryId) return;
+
     fetch(`http://127.0.0.1:5000/factory/dashboard/${factoryId}`)
       .then(res => res.json())
-      .then(data => setFactory(data));
+      .then(setData)
+      .catch(() => console.error("Backend not reachable"));
   }, [factoryId]);
 
-  if (!factory) return null;
+  if (!data) return null;
 
-  const emissionValues = Object.values(factory.emissions);
-  const months = Object.keys(factory.emissions);
-
-  const latestEmission = factory.latest_emission;
-  const allowedLimit = factory.allowed_limit;
-  const status = factory.status;
-  const fine = latestEmission > allowedLimit ? 500 : 0;
+  const { today, charts, compliance, recent } = data;
 
   const airData = {
-    labels: months,
+    labels: charts.months,
     datasets: [
       {
         label: "Air Emission",
-        data: emissionValues,
+        data: charts.air,
         borderColor: "#4caf50",
         backgroundColor: "#4caf50",
         tension: 0.4
@@ -57,11 +53,11 @@ export default function Dashboard() {
   };
 
   const waterData = {
-    labels: months,
+    labels: charts.months,
     datasets: [
       {
         label: "Water Emission",
-        data: emissionValues.map(v => Math.round(v * 0.75)),
+        data: charts.water,
         borderColor: "#2196f3",
         backgroundColor: "#2196f3",
         tension: 0.4
@@ -78,26 +74,26 @@ export default function Dashboard() {
         <div className="cards">
           <div className="card blue">
             <p>Air Emission</p>
-            <h2>{latestEmission} / {allowedLimit}</h2>
+            <h2>{today.air} / {today.air_limit}</h2>
           </div>
 
           <div className="card cyan">
             <p>Water Emission</p>
-            <h2>{Math.round(latestEmission * 0.75)} / {Math.round(allowedLimit * 0.75)}</h2>
+            <h2>{today.water} / {today.water_limit}</h2>
           </div>
 
           <div className="card green">
             <p>Status</p>
-            <h2>{status}</h2>
+            <h2>{today.status}</h2>
           </div>
 
           <div className="card pink">
             <p>Today Fine</p>
-            <h2>₹{fine}</h2>
+            <h2>₹{today.fine}</h2>
           </div>
         </div>
 
-        {/* GRID SECTION */}
+        {/* GRID */}
         <div className="grid">
           <div className="box">
             <h3>Air Emission Trends</h3>
@@ -108,10 +104,10 @@ export default function Dashboard() {
             <h3>Compliance Status</h3>
             <div className="gauge">
               <div className="circle">
-                {Math.round((latestEmission / allowedLimit) * 100)}%
+                {compliance.percentage}%
               </div>
               <p>
-                {status === "SAFE"
+                {compliance.status === "SAFE"
                   ? "Air and water emissions are within safe limits."
                   : "Emission limit exceeded. Action required."}
               </p>
@@ -124,20 +120,18 @@ export default function Dashboard() {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Date / Time</th>
+                  <th>Date</th>
                   <th>Air</th>
                   <th>Fine</th>
                 </tr>
               </thead>
               <tbody>
-                {months.slice(-3).reverse().map((m, i) => (
+                {recent.map((r, i) => (
                   <tr key={i}>
                     <td>{factoryId}</td>
-                    <td>{m}</td>
-                    <td>{factory.emissions[m]}</td>
-                    <td>
-                      {factory.emissions[m] > allowedLimit ? "₹500" : "₹0"}
-                    </td>
+                    <td>{r.month}</td>
+                    <td>{r.air}</td>
+                    <td>₹{r.fine}</td>
                   </tr>
                 ))}
               </tbody>
@@ -151,6 +145,7 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* SUBMIT */}
         <div className="bottom-submit-container">
           <button
             className="bottom-submit-btn"

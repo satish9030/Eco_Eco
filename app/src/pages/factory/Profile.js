@@ -12,15 +12,17 @@ import { useEffect, useState } from "react";
 
 export default function Profile() {
   const factoryId = localStorage.getItem("factoryId");
-  const [factory, setFactory] = useState(null);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     fetch(`http://127.0.0.1:5000/factory/dashboard/${factoryId}`)
       .then(res => res.json())
-      .then(data => setFactory(data));
+      .then(res => setData(res));
   }, [factoryId]);
 
-  if (!factory) return null;
+  if (!data) return null;
+
+  const { factory, today } = data;
 
   return (
     <div className="profile-page">
@@ -29,13 +31,13 @@ export default function Profile() {
         {/* HEADER */}
         <div className="profile-header">
           <div className="profile-avatar">
-            <MdFactory size={36} />
+            <MdFactory size={34} />
           </div>
 
           <div>
             <h1>{factory.name}</h1>
             <p className="profile-subtitle">
-              Manufacturing Unit • {factory.status}
+              Manufacturing Unit • {today.status}
             </p>
           </div>
         </div>
@@ -51,7 +53,7 @@ export default function Profile() {
             </div>
             <div>
               <span className="label">Factory ID</span>
-              <span className="value">{factoryId}</span>
+              <span className="value small">{factoryId}</span>
             </div>
           </div>
 
@@ -71,7 +73,7 @@ export default function Profile() {
             </div>
             <div>
               <span className="label">Industry Type</span>
-              <span className="value">Manufacturing</span>
+              <span className="value small">Manufacturing</span>
             </div>
           </div>
 
@@ -81,7 +83,13 @@ export default function Profile() {
             </div>
             <div>
               <span className="label">Compliance Status</span>
-              <span className="value safe">{factory.status}</span>
+              <span
+                className={`value ${
+                  today.status === "SAFE" ? "safe" : "danger"
+                }`}
+              >
+                {today.status}
+              </span>
             </div>
           </div>
 
@@ -93,7 +101,7 @@ export default function Profile() {
           <div className="extra-box">
             <FaIndustry className="extra-icon" />
             <h3>Allowed Limit</h3>
-            <p>{factory.allowed_limit}</p>
+            <p>{today.air_limit}</p>
           </div>
 
           <div className="extra-box">
@@ -105,7 +113,7 @@ export default function Profile() {
           <div className="extra-box">
             <FaMoneyBillWave className="extra-icon" />
             <h3>Total Fines</h3>
-            <p>₹{factory.latest_emission > factory.allowed_limit ? 500 : 0}</p>
+            <p>₹{today.fine}</p>
           </div>
 
         </div>

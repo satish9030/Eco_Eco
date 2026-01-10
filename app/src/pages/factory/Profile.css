@@ -33,13 +33,13 @@
 
 .profile-header h1 {
   margin: 0;
-  font-size: 24px; /* reduced */
+  font-size: 26px;
 }
 
 .profile-subtitle {
-  margin-top: 4px;
+  margin-top: 6px;
   color: #666;
-  font-size: 13px; /* reduced */
+  font-size: 14px;
 }
 
 .divider {
@@ -80,19 +80,35 @@
   background: #c8e6c9;
 }
 
+/* TEXT */
 .label {
-  font-size: 12px; /* reduced */
+  font-size: 13px;
   color: #777;
 }
 
 .value {
-  font-size: 14px; /* reduced */
+  display: block;
+  margin-top: 4px;
+  font-size: 15px;          /* ↓ reduced */
   font-weight: 600;
   color: #222;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.value.small {
+  font-size: 14px;
 }
 
 .value.safe {
   color: #2e7d32;
+  font-weight: 700;
+}
+
+.value.danger {
+  color: #c62828;
+  font-weight: 700;
+  font-size: 15px;          /* ↓ reduced from huge */
 }
 
 /* EXTRA INFO */
@@ -111,20 +127,20 @@
 }
 
 .extra-icon {
-  font-size: 24px; /* slightly reduced */
+  font-size: 24px;
   color: #1b5e20;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .extra-box h3 {
-  margin: 5px 0;
-  font-size: 14px; /* reduced */
+  margin: 6px 0;
+  font-size: 14px;
   color: #444;
 }
 
 .extra-box p {
   margin: 0;
-  font-size: 16px; /* reduced */
+  font-size: 17px;
   font-weight: bold;
   color: #1b5e20;
 }
@@ -138,4 +154,9 @@
   .profile-extra {
     grid-template-columns: 1fr;
   }
+}
+/* 🔽 Reduce ONLY Location font size */
+.detail-box .value.location {
+  font-size: 14px;
+  font-weight: 600;
 }
