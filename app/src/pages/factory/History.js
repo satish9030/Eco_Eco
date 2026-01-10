@@ -2,23 +2,14 @@ import { useEffect, useState } from "react";
 import "./History.css";
 
 export default function History() {
+  const factoryId = localStorage.getItem("factoryId");
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/monthly-report")
+    fetch(`http://127.0.0.1:5000/factory-history/${factoryId}`)
       .then(res => res.json())
-      .then(result => {
-        const factory = Object.values(result.factories)[0];
-        setRows([
-          {
-            date: factory.month,
-            air: factory.emission,
-            limit: factory.allowed_limit,
-            status: factory.status
-          }
-        ]);
-      });
-  }, []);
+      .then(data => setRows(data));
+  }, [factoryId]);
 
   return (
     <>
@@ -37,10 +28,10 @@ export default function History() {
         <tbody>
           {rows.map((d, i) => (
             <tr key={i}>
-              <td>{d.date}</td>
-              <td>{d.air}</td>
-              <td>{d.limit}</td>
-              <td className={d.status === "OK" ? "safe" : "danger"}>
+              <td>{d.month}</td>
+              <td>{d.emission}</td>
+              <td>{d.allowed_limit}</td>
+              <td className={d.status === "SAFE" ? "safe" : "danger"}>
                 {d.status}
               </td>
             </tr>

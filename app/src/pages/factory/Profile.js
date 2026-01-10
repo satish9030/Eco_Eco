@@ -1,15 +1,27 @@
 import "./Profile.css";
-import { 
-  FaIndustry, 
-  FaMapMarkerAlt, 
-  FaIdCard, 
-  FaShieldAlt, 
-  FaStar, 
-  FaMoneyBillWave 
+import {
+  FaIndustry,
+  FaMapMarkerAlt,
+  FaIdCard,
+  FaShieldAlt,
+  FaStar,
+  FaMoneyBillWave
 } from "react-icons/fa";
 import { MdFactory } from "react-icons/md";
+import { useEffect, useState } from "react";
 
 export default function Profile() {
+  const factoryId = localStorage.getItem("factoryId");
+  const [factory, setFactory] = useState(null);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:5000/factory/dashboard/${factoryId}`)
+      .then(res => res.json())
+      .then(data => setFactory(data));
+  }, [factoryId]);
+
+  if (!factory) return null;
+
   return (
     <div className="profile-page">
       <div className="profile-card">
@@ -21,8 +33,10 @@ export default function Profile() {
           </div>
 
           <div>
-            <h1>ABC Industries</h1>
-            <p className="profile-subtitle">Manufacturing Unit • Active</p>
+            <h1>{factory.name}</h1>
+            <p className="profile-subtitle">
+              Manufacturing Unit • {factory.status}
+            </p>
           </div>
         </div>
 
@@ -36,8 +50,8 @@ export default function Profile() {
               <FaIdCard />
             </div>
             <div>
-              <span className="label">License ID</span>
-              <span className="value">IND-2345</span>
+              <span className="label">Factory ID</span>
+              <span className="value">{factoryId}</span>
             </div>
           </div>
 
@@ -47,7 +61,7 @@ export default function Profile() {
             </div>
             <div>
               <span className="label">Location</span>
-              <span className="value">Hyderabad, Telangana</span>
+              <span className="value">{factory.city}</span>
             </div>
           </div>
 
@@ -57,7 +71,7 @@ export default function Profile() {
             </div>
             <div>
               <span className="label">Industry Type</span>
-              <span className="value">Chemical Manufacturing</span>
+              <span className="value">Manufacturing</span>
             </div>
           </div>
 
@@ -67,7 +81,7 @@ export default function Profile() {
             </div>
             <div>
               <span className="label">Compliance Status</span>
-              <span className="value safe">SAFE</span>
+              <span className="value safe">{factory.status}</span>
             </div>
           </div>
 
@@ -78,8 +92,8 @@ export default function Profile() {
 
           <div className="extra-box">
             <FaIndustry className="extra-icon" />
-            <h3>Production Capacity</h3>
-            <p>1200 Units / Month</p>
+            <h3>Allowed Limit</h3>
+            <p>{factory.allowed_limit}</p>
           </div>
 
           <div className="extra-box">
@@ -91,7 +105,7 @@ export default function Profile() {
           <div className="extra-box">
             <FaMoneyBillWave className="extra-icon" />
             <h3>Total Fines</h3>
-            <p>₹ 1,500</p>
+            <p>₹{factory.latest_emission > factory.allowed_limit ? 500 : 0}</p>
           </div>
 
         </div>

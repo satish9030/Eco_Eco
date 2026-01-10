@@ -81,6 +81,32 @@ def public_report(city):
     })
 
 
+# ================= FACTORY DASHBOARD (NEW – REQUIRED) =================
+@app.route("/factory/dashboard/<factory_id>", methods=["GET"])
+def factory_dashboard(factory_id):
+    if factory_id not in factories:
+        return jsonify({"error": "Factory not found"}), 404
+
+    factory = factories[factory_id]
+
+    latest_month = list(factory["emissions"].keys())[-1]
+    latest_emission = factory["emissions"][latest_month]
+
+    allowed = factory["allowed_limit"] or factory["base_limit"]
+    status = "SAFE" if latest_emission <= allowed else "EXCEEDED"
+
+    return jsonify({
+        "factory_id": factory_id,
+        "name": factory["name"],
+        "city": factory["city"],
+        "latest_month": latest_month,
+        "latest_emission": latest_emission,
+        "allowed_limit": allowed,
+        "status": status,
+        "emissions": factory["emissions"]
+    })
+
+
 # ================= FACTORY HISTORY =================
 @app.route("/factory-history/<factory_id>", methods=["GET"])
 def factory_history(factory_id):
@@ -90,7 +116,7 @@ def factory_history(factory_id):
     factory = factories[factory_id]
     history = []
 
-    allowed = factory["allowed_limit"] or 100
+    allowed = factory["allowed_limit"] or factory["base_limit"]
 
     for month, emission in factory["emissions"].items():
         history.append({
@@ -110,7 +136,7 @@ def factory_fine(factory_id):
         return jsonify({"fine": 0})
 
     factory = factories[factory_id]
-    allowed = factory["allowed_limit"] or 100
+    allowed = factory["allowed_limit"] or factory["base_limit"]
     latest_emission = list(factory["emissions"].values())[-1]
 
     fine = 500 if latest_emission > allowed else 0

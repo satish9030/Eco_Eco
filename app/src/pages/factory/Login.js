@@ -4,29 +4,31 @@ import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [factoryId, setFactoryId] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://127.0.0.1:5000/login", {
+      const res = await fetch("http://127.0.0.1:5000/factory/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          role: "factory",
-          username,
+          factory_id: factoryId,
           password
         })
       });
 
+      const data = await res.json();
+
       if (res.ok) {
+        localStorage.setItem("factoryId", data.factory_id);
         navigate("/factory/dashboard");
       } else {
-        alert("Invalid credentials");
+        alert(data.message || "Invalid credentials");
       }
-    } catch (err) {
+    } catch {
       alert("Backend not reachable");
     }
   };
@@ -39,16 +41,18 @@ function Login() {
         <form onSubmit={handleLogin}>
           <input
             type="text"
-            placeholder="Factory ID / Email"
+            placeholder="Factory ID (ex: F001)"
             required
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setFactoryId(e.target.value)}
           />
+
           <input
             type="password"
             placeholder="Password"
             required
             onChange={(e) => setPassword(e.target.value)}
           />
+
           <button type="submit">Login</button>
         </form>
 

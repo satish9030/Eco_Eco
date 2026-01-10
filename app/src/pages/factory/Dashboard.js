@@ -10,6 +10,7 @@ import {
   Legend
 } from "chart.js";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -22,13 +23,32 @@ ChartJS.register(
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const factoryId = localStorage.getItem("factoryId");
+
+  const [factory, setFactory] = useState(null);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:5000/factory/dashboard/${factoryId}`)
+      .then(res => res.json())
+      .then(data => setFactory(data));
+  }, [factoryId]);
+
+  if (!factory) return null;
+
+  const emissionValues = Object.values(factory.emissions);
+  const months = Object.keys(factory.emissions);
+
+  const latestEmission = factory.latest_emission;
+  const allowedLimit = factory.allowed_limit;
+  const status = factory.status;
+  const fine = latestEmission > allowedLimit ? 500 : 0;
 
   const airData = {
-    labels: ["8", "7", "6", "8", "8", "8", "10"],
+    labels: months,
     datasets: [
       {
         label: "Air Emission",
-        data: [102, 98, 94, 96, 93, 92, 95],
+        data: emissionValues,
         borderColor: "#4caf50",
         backgroundColor: "#4caf50",
         tension: 0.4
@@ -37,11 +57,11 @@ export default function Dashboard() {
   };
 
   const waterData = {
-    labels: ["8", "7", "6", "8", "8", "9", "10"],
+    labels: months,
     datasets: [
       {
         label: "Water Emission",
-        data: [85, 80, 75, 78, 77, 78, 70],
+        data: emissionValues.map(v => Math.round(v * 0.75)),
         borderColor: "#2196f3",
         backgroundColor: "#2196f3",
         tension: 0.4
@@ -54,28 +74,30 @@ export default function Dashboard() {
       <div className="dashboard-content">
         <h1>Today's Emission Status</h1>
 
+        {/* TOP CARDS */}
         <div className="cards">
           <div className="card blue">
             <p>Air Emission</p>
-            <h2>95 / 100</h2>
+            <h2>{latestEmission} / {allowedLimit}</h2>
           </div>
 
           <div className="card cyan">
             <p>Water Emission</p>
-            <h2>70 / 80</h2>
+            <h2>{Math.round(latestEmission * 0.75)} / {Math.round(allowedLimit * 0.75)}</h2>
           </div>
 
           <div className="card green">
             <p>Status</p>
-            <h2>SAFE</h2>
+            <h2>{status}</h2>
           </div>
 
           <div className="card pink">
             <p>Today Fine</p>
-            <h2>₹0</h2>
+            <h2>₹{fine}</h2>
           </div>
         </div>
 
+        {/* GRID SECTION */}
         <div className="grid">
           <div className="box">
             <h3>Air Emission Trends</h3>
@@ -85,8 +107,14 @@ export default function Dashboard() {
           <div className="box center">
             <h3>Compliance Status</h3>
             <div className="gauge">
-              <div className="circle">95%</div>
-              <p>Air and water emissions are within safe limits.</p>
+              <div className="circle">
+                {Math.round((latestEmission / allowedLimit) * 100)}%
+              </div>
+              <p>
+                {status === "SAFE"
+                  ? "Air and water emissions are within safe limits."
+                  : "Emission limit exceeded. Action required."}
+              </p>
             </div>
           </div>
 
@@ -102,24 +130,16 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>FA847</td>
-                  <td>April 24, 2024, 11:00 AM</td>
-                  <td>95</td>
-                  <td>₹0</td>
-                </tr>
-                <tr>
-                  <td>FA847</td>
-                  <td>April 23, 2024, 11:00 AM</td>
-                  <td>94</td>
-                  <td>₹0</td>
-                </tr>
-                <tr>
-                  <td>FA847</td>
-                  <td>April 22, 2024, 11:00 AM</td>
-                  <td>96</td>
-                  <td>₹0</td>
-                </tr>
+                {months.slice(-3).reverse().map((m, i) => (
+                  <tr key={i}>
+                    <td>{factoryId}</td>
+                    <td>{m}</td>
+                    <td>{factory.emissions[m]}</td>
+                    <td>
+                      {factory.emissions[m] > allowedLimit ? "₹500" : "₹0"}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
             <div className="view">View All →</div>
