@@ -15,7 +15,7 @@ export default function Profile() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/factory/dashboard/${factoryId}`)
+    fetch(`https://eco-eco-xxxx.onrender.com/factory/dashboard/${factoryId}`)
       .then(res => res.json())
       .then(res => setData(res));
   }, [factoryId]);

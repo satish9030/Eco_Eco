@@ -6,7 +6,7 @@ export default function History() {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/factory-history/${factoryId}`)
+    fetch(`https://eco-eco-xxxx.onrender.com/factory-history/${factoryId}`)
       .then(res => res.json())
       .then(data => setRows(data));
   }, [factoryId]);

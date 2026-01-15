@@ -8,9 +8,9 @@ export default function Fines() {
   const [status, setStatus] = useState(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/factory/dashboard/${factoryId}`)
-      .then(res => res.json())
-      .then(data => {
+    fetch(`https://eco-eco-xxxx.onrender.com/factory/dashboard/${factoryId}`)
+      .then((res) => res.json())
+      .then((data) => {
         // ✅ CORRECT PATH
         setStatus(data.today.status);
         setFine(data.today.fine);

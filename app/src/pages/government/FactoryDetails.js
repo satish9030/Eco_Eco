@@ -16,17 +16,17 @@ export default function FactoryDetails() {
   const [fine, setFine] = useState(0);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/monthly-report")
+    fetch("https://eco-eco-xxxx.onrender.com/monthly-report")
       .then(res => res.json())
       .then(data => {
         setFactory(data.factories[state.factoryId]);
       });
 
-    fetch(`http://127.0.0.1:5000/factory-history/${state.factoryId}`)
+    fetch(`https://eco-eco-xxxx.onrender.com/factory-history/${state.factoryId}`)
       .then(res => res.json())
       .then(setHistory);
 
-    fetch(`http://127.0.0.1:5000/factory-fine/${state.factoryId}`)
+    fetch(`https://eco-eco-xxxx.onrender.com/factory-fine/${state.factoryId}`)
       .then(res => res.json())
       .then(data => setFine(data.fine));
   }, [state.factoryId]);

@@ -7,7 +7,7 @@ export default function Factories() {
   const [factories, setFactories] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/monthly-report")
+    fetch("https://eco-eco-xxxx.onrender.com/monthly-report")
       .then(res => res.json())
       .then(data => {
         const list = Object.entries(data.factories).map(([id, f]) => ({

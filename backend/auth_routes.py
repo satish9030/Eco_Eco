@@ -1,10 +1,11 @@
 from flask import Blueprint, request, jsonify
 from factories_data import factories
 from Login_credentials import users
+import uuid
 
 auth = Blueprint("auth", __name__)
 
-# ================= FACTORY LOGIN (NEW SOURCE) =================
+# ================= FACTORY LOGIN =================
 @auth.route("/factory/login", methods=["POST"])
 def factory_login():
     data = request.get_json()
@@ -28,7 +29,7 @@ def factory_login():
     }), 200
 
 
-# ================= GOV + PUBLIC LOGIN (UNCHANGED) =================
+# ================= GOV + PUBLIC LOGIN (FIXED) =================
 @auth.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
@@ -37,17 +38,27 @@ def login():
     username = data.get("username")
     password = data.get("password")
 
+    # 🔧 ROLE NORMALIZATION
+    if role == "gov":
+        role = "government"
+
     if (
         role in users and
         username in users[role] and
         users[role][username] == password
     ):
-        return jsonify({"status": "success"}), 200
+        token = f"{role}-{uuid.uuid4()}"  # ✅ SIMPLE TOKEN
+
+        return jsonify({
+            "status": "success",
+            "token": token,
+            "role": role
+        }), 200
 
     return jsonify({"status": "failed"}), 401
 
 
-# ================= PUBLIC REGISTER (UNCHANGED) =================
+# ================= PUBLIC REGISTER =================
 @auth.route("/public-register", methods=["POST"])
 def public_register():
     data = request.get_json()
